@@ -1,0 +1,32 @@
+//
+// upb - a minimalist implementation of protocol buffers.
+//
+// Copyright (c) 2014 Google Inc.  See LICENSE for details.
+// Author: Josh Haberman <jhaberman@gmail.com>
+//
+// Schema for generic JSON parsing.
+
+package upb.json;
+
+message JsonArray {
+  repeated JsonValue value = 1;
+}
+
+message JsonObject {
+  map<string, JsonValue> properties = 1;
+}
+
+message JsonValue {
+  oneof value {
+    JsonObject object_value = 1;
+    JsonArray array_value = 2;
+    bool is_null = 3;
+    bool boolean_value = 4;
+    string string_value = 5;
+
+    // JSON doesn't define range/precision for numbers, so we just vend the
+    // number as a string.  We do verify it is a textually-valid JSON number.
+    // May add double/int64 options here later.
+    string number_value = 6;
+  }
+}

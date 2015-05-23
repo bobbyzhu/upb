@@ -178,6 +178,8 @@ endif
 upb_json_SRCS = \
   upb/json/parser.c \
   upb/json/printer.c \
+  upb/json/typed_parser.c \
+  upb/json/json.upb.c \
 
 # Ideally we could keep this uncommented, but Git apparently sometimes skews
 # timestamps slightly at "clone" time, which makes "Make" think that it needs
@@ -244,8 +246,13 @@ upb/descriptor/descriptor.pb: upb/descriptor/descriptor.proto
 	@# TODO: replace with upbc
 	protoc upb/descriptor/descriptor.proto -oupb/descriptor/descriptor.pb
 
-genfiles: upb/descriptor/descriptor.pb tools/upbc
+upb/json/json.pb: upb/json/json.proto
+	@# TODO: replace with upbc
+	protoc upb/json/json.proto -oupb/json/json.pb
+
+genfiles: upb/descriptor/descriptor.pb upb/json/json.pb tools/upbc
 	./tools/upbc upb/descriptor/descriptor.pb upb/descriptor/descriptor google_protobuf_descriptor
+	./tools/upbc upb/json/json.pb upb/json/json upb_json
 	lua dynasm/dynasm.lua upb/pb/compile_decoder_x64.dasc > upb/pb/compile_decoder_x64.h || (rm upb/pb/compile_decoder_x64.h ; false)
 
 # upbc depends on these Lua extensions.

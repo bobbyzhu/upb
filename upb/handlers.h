@@ -76,6 +76,7 @@ typedef enum {
 // A convenient definition for when no closure is needed.
 extern char _upb_noclosure;
 #define UPB_NO_CLOSURE &_upb_noclosure
+#define UPB_SIZE_UNKNOWN -1
 
 // A selector refers to a specific field handler in the Handlers object
 // (for example: the STARTSUBMSG handler for field "field15").

@@ -4,14 +4,15 @@
  * Copyright (c) 2014 Google Inc.  See LICENSE for details.
  * Author: Josh Haberman <jhaberman@gmail.com>
  *
- * upb::json::Parser can parse JSON according to a specific schema.
- * Support for parsing arbitrary JSON (schema-less) will be added later.
+ * upb::json::Parser parses generic JSON according to the schema in json.proto.
+ * To parse JSON matching a specific schema, use upb::json::TypedParser instead.
  */
 
 #ifndef UPB_JSON_PARSER_H_
 #define UPB_JSON_PARSER_H_
 
 #include "upb/env.h"
+#include "upb/json/json.upb.h"
 #include "upb/sink.h"
 
 #ifdef __cplusplus
@@ -37,6 +38,7 @@ UPB_DECLARE_TYPE(upb::json::Parser, upb_json_parser);
 // Parses an incoming BytesStream, pushing the results to the destination sink.
 class upb::json::Parser {
  public:
+  // The output sink *must* have a JsonObject msgdef.
   static Parser* Create(Environment* env, Sink* output);
 
   BytesSink* input();
